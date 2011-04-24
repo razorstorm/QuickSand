@@ -1,4 +1,4 @@
-name: QuickSand
-main: com.bukkit.jason.quickSand.QuickSand
+name: Pitfall
+main: com.bukkit.jason.pitfall.Pitfall
 version: 0.1
 author: petrifiednightmares
