@@ -11,7 +11,7 @@ public class PitfallSettings {
 */
 
     public static int pitItem = 82;
-    public static String[] blackList = null;
+    public static String[] blackList = new String[0];
 
     /**
 * Bukkit config class

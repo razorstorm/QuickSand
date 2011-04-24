@@ -41,12 +41,24 @@ public class PitfallPlayerListener extends PlayerListener
 			}, 2l);
 		}
 	}
-
+	//TODO Use better method, exception driven testing is BAAAAD
+    private boolean isInteger( String input )  
+    {  
+       try  
+       {  
+          Integer.parseInt( input );  
+          return true;  
+       }  
+       catch( Exception e)  
+       {  
+          return false;  
+       }  
+    }  
 	private boolean inBlackList(int typeId)
 	{
 		for(int i=0;i<PitfallSettings.blackList.length;i++)
 		{
-			if(Integer.parseInt(PitfallSettings.blackList[i])==typeId)
+			if(isInteger(PitfallSettings.blackList[i])&&Integer.parseInt(PitfallSettings.blackList[i])==typeId)
 			{
 				return true;
 			}
@@ -59,8 +71,7 @@ public class PitfallPlayerListener extends PlayerListener
 			return;
 		final Block h = player.getWorld().getBlockAt(b.getLocation().getBlockX(), b.getLocation().getBlockY() + 1, b.getLocation().getBlockZ());
 		final int type = h.getTypeId();
-
-		if (PitfallSettings.blackList == null || !inBlackList(h.getTypeId()) )
+		if (!inBlackList(h.getTypeId()) )
 		{
 			h.setTypeId(0);
 			b.setTypeId(0);
