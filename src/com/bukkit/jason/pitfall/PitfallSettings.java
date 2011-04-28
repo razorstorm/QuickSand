@@ -25,12 +25,13 @@ public class PitfallSettings
 	 * Bukkit config class
 	 */
 	public static Configuration config = null;
-
+	private static Pitfall plugin;
 	/**
 	 * Load and parse the YAML config file
 	 */
-	public static void load()
+	public static void load(Pitfall p)
 	{
+		plugin=p;
 
 		File dataDirectory = new File("plugins" + File.separator + "Pitfall" + File.separator);
 
@@ -45,15 +46,17 @@ public class PitfallSettings
 			String version = "";
 			version = config.getString("pitfall.version", version);
 			setSettings();
-			if (version == "" || !(version.equals(Pitfall.version)))
+			if (version == "" || !(version.equals(plugin.pdfFile.getVersion())))
 			{
 				System.out.println("Version out of date, reconfigurating");
 				writeFile(file);
 			}
 		}
-		if (!file.exists())
+		else
 		{
 			writeFile(file);
+			config = new Configuration(file);
+			config.load();
 		}
 		config.load();
 		setSettings();
@@ -68,7 +71,7 @@ public class PitfallSettings
 			Configuration tempConfig;
 			tempConfig = new Configuration(temp);
 			tempConfig.load();
-			tempConfig.setProperty("pitfall.version", Pitfall.version);
+			tempConfig.setProperty("pitfall.version", plugin.pdfFile.getVersion());
 			tempConfig.setProperty("pitfall.pitItem", pitItem);
 			tempConfig.setProperty("pitfall.block.blackList", "[]");
 			tempConfig.setProperty("pitfall.redstone.enabled", redstonePitEnabled);

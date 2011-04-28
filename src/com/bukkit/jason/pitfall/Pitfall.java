@@ -19,11 +19,12 @@ public class Pitfall extends JavaPlugin
 	private final PitfallPlayerListener playerListener = new PitfallPlayerListener(this);
 	private final PitfallBlockListener blockListener = new PitfallBlockListener(this);
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-	public final static String version="0.4";
+	public PluginDescriptionFile pdfFile=null;
     
 	public void onEnable()
 	{
-		PitfallSettings.load();
+		pdfFile = this.getDescription();
+		PitfallSettings.load(this);
 		
 		// Register our events
 		PluginManager pm = getServer().getPluginManager();
@@ -33,8 +34,7 @@ public class Pitfall extends JavaPlugin
 		pm.registerEvent(Event.Type.REDSTONE_CHANGE, blockListener, Priority.Normal, this);
 		// EXAMPLE: Custom code, here we just output some info so we can check
 		// all is well
-		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println(pdfFile.getName() + " version " + Pitfall.version + " is enabled!");
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 	}
 	
 	public void onDisable()
