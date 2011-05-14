@@ -45,7 +45,7 @@ public class PitfallBlockListener extends BlockListener
 		final int wireId=wire.getTypeId();
 		wire.setTypeId(0);
 		b.setTypeId(0);
-		plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable()
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 		{
 			public void run()
 			{
@@ -58,7 +58,7 @@ public class PitfallBlockListener extends BlockListener
 				{
 				}
 			}
-		}, 60l);
+		}, PitfallSettings.returnDelay);
 		if (PitfallSettings.redstoneTriggerCorner)
 		{
 			destroyBelow(b.getRelative(BlockFace.NORTH_EAST),wire.getRelative(BlockFace.NORTH_EAST));
@@ -78,7 +78,7 @@ public class PitfallBlockListener extends BlockListener
 			return;
 
 		b.setTypeId(0);
-		plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable()
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 		{
 			public void run()
 			{
@@ -90,7 +90,7 @@ public class PitfallBlockListener extends BlockListener
 				{
 				}
 			}
-		}, 60l);
+		}, PitfallSettings.returnDelay);
 
 		if (PitfallSettings.redstoneTriggerCorner)
 		{

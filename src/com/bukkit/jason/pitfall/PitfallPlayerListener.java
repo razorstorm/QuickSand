@@ -27,24 +27,31 @@ public class PitfallPlayerListener extends PlayerListener
 		final Block h = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() - 1, player.getLocation().getBlockZ());
 		final Block b = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ());
 		int botMaterial = b.getTypeId();
-		if (botMaterial == PitfallSettings.pitItem && h.getTypeId()!=0)
+		if (!playerInBlacklist(player))
 		{
-			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable()
+			if (botMaterial == PitfallSettings.pitItem && h.getTypeId() != 0)
 			{
-				public void run()
+				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
-					try
+					public void run()
 					{
-						destroy(player.getWorld(), b);
+						try
+						{
+							destroy(player.getWorld(), b);
+						}
+						catch (Exception e)
+						{
+						}
 					}
-					catch (Exception e)
-					{
-					}
-				}
-			}, 2l);
+				}, PitfallSettings.trapDelay);
+			}
 		}
 	}
 
+	private boolean playerInBlacklist(Player player)
+	{
+		return false;
+	}
 	// TODO Use better method, exception driven testing is BAAAAD
 	private boolean isInteger(String input)
 	{
@@ -73,12 +80,17 @@ public class PitfallPlayerListener extends PlayerListener
 
 	public void destroy(World world, final Block b)
 	{
+		if (b==null)
+		{
+			System.out.println("b was null: "+world);
+			return;
+		}
 		if (b.getTypeId() != PitfallSettings.pitItem)
 			return;
 		final Block h = world.getBlockAt(b.getLocation().getBlockX(), b.getLocation().getBlockY() + 1, b.getLocation().getBlockZ());
 		final int type = h.getTypeId();
 		final byte data = h.getData();
-		
+
 		if (!inBlackList(h.getTypeId()))
 		{
 			if (h.getState() instanceof CraftSign)
@@ -86,7 +98,7 @@ public class PitfallPlayerListener extends PlayerListener
 				final String[] lines = ((CraftSign) h.getState()).getLines();
 				h.setTypeId(0);
 				b.setTypeId(0);
-				plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable()
+				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
 					public void run()
 					{
@@ -111,14 +123,14 @@ public class PitfallPlayerListener extends PlayerListener
 							e.printStackTrace();
 						}
 					}
-				}, 60l);
+				}, PitfallSettings.returnDelay);
 			}
 
 			else
 			{
 				h.setTypeId(0);
 				b.setTypeId(0);
-				plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable()
+				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
 					public void run()
 					{
@@ -134,7 +146,7 @@ public class PitfallPlayerListener extends PlayerListener
 							e.printStackTrace();
 						}
 					}
-				}, 60l);
+				}, PitfallSettings.returnDelay);
 			}
 		}
 

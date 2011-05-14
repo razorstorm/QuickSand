@@ -20,6 +20,9 @@ public class PitfallSettings
 	public static boolean redstoneTriggerCorner = false;
 	public static int redstonePitItem = 45;
 	public static String[] blackList = new String[0];
+	public static long trapDelay = 2;
+	public static long returnDelay = 60;
+	
 
 	/**
 	 * Bukkit config class
@@ -72,6 +75,8 @@ public class PitfallSettings
 			tempConfig = new Configuration(temp);
 			tempConfig.load();
 			tempConfig.setProperty("pitfall.version", plugin.pdfFile.getVersion());
+			tempConfig.setProperty("pitfall.delay.trap", trapDelay);
+			tempConfig.setProperty("pitfall.delay.return", returnDelay);
 			tempConfig.setProperty("pitfall.pitItem", pitItem);
 			tempConfig.setProperty("pitfall.block.blackList", "[]");
 			tempConfig.setProperty("pitfall.redstone.enabled", redstonePitEnabled);
@@ -87,6 +92,10 @@ public class PitfallSettings
 			bw.newLine();
 			bw.write("#pitfall.block.blackList defines surface blocks that do not trigger pressure trap. Format: [32,12,5,123]");
 			bw.newLine();
+			bw.write("#pitfall.delay.trap specifies how long before the trap activates");
+			bw.newLine();
+			bw.write("#pitfall.delay.return specifies how long before the trap closes again");
+			bw.newLine();
 			bw.write("#pitfall.redstone.enabled is used to enable redstone triggered traps. Defaults to " + redstonePitEnabled);
 			bw.newLine();
 			bw.write("#pitfall.redstone.pitItem defines the block that acts as the redstone trigged trap. Defaults to " + redstonePitItem);
@@ -96,8 +105,6 @@ public class PitfallSettings
 			bw.newLine();
 			while (sc.hasNextLine())
 			{
-//				String l=sc.nextLine();
-//				System.out.println(l);
 				bw.write(sc.nextLine());
 				bw.newLine();
 			}
@@ -118,6 +125,8 @@ public class PitfallSettings
 	{
 
 		pitItem = config.getInt("pitfall.pitItem", pitItem);
+		trapDelay = (long)config.getInt("pitfall.delay.trap", (int)trapDelay);
+		returnDelay = (long)config.getInt("pitfall.delay.return", (int)returnDelay);
 		String blackListStr = "";
 		blackListStr = config.getString("pitfall.block.blackList", blackListStr);
 		redstonePitEnabled = config.getBoolean("pitfall.redstone.enabled", redstonePitEnabled);
